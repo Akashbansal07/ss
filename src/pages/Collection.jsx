@@ -12,6 +12,9 @@ const SORTS = [['newest','Newest First'],['price-asc','Price: Low–High'],['pri
 // Module-level cache — survives re-renders and page navigation within the session.
 // Cleared automatically when the browser tab is closed or refreshed.
 let _cache = null;
+let _cacheTime = null;
+const CACHE_TTL = 20 * 60 * 1000; // 20 minutes
+export function bustJewelCache() { _cache = null; _cacheTime = null; }
 
 export default function Collection() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -32,10 +35,12 @@ export default function Collection() {
       try {
         // Use cache if available — avoids re-fetching when switching categories
         // or navigating back from a product page within the same session.
-        if (!_cache) {
+        const cacheExpired = !_cacheTime || (Date.now() - _cacheTime > CACHE_TTL);
+        if (!_cache || cacheExpired) {
           const q = query(collection(db,'jewelry'), orderBy('createdAt','desc'));
           const snap = await getDocs(q);
           _cache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+          _cacheTime = Date.now();
         }
         setJewels(cat !== 'All' ? _cache.filter(j => j.category === cat) : _cache);
       } catch { setJewels([]); }

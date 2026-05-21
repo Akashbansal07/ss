@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { bustJewelCache } from './Collection';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useDropzone } from 'react-dropzone';
 import {
@@ -162,6 +163,7 @@ export default function Admin() {
       toast.success('Jewellery added!', { id: t });
       setForm(EMPTY_FORM);
       setImages([]);
+      bustJewelCache(); // clear cache so collection page re-fetches fresh data
       fetchJewels();
       setTab('manage');
     } catch (err) {
@@ -187,6 +189,7 @@ export default function Admin() {
       }
       await deleteDoc(doc(db, 'jewelry', jewel.id));
       toast.success('Deleted successfully', { id: t });
+      bustJewelCache(); // clear cache so collection page re-fetches fresh data
       setJewels(prev => prev.filter(j => j.id !== jewel.id));
     } catch {
       toast.error('Delete failed', { id: t });
@@ -202,7 +205,7 @@ export default function Admin() {
     return (
       <div className="min-h-screen bg-[#fafafa] flex items-center justify-center px-4 sm:px-6">
         {/* Background accent */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_50%,rgba(201,168,76,0.05),transparent)] pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_50%,rgba(168,117,30,0.05),transparent)] pointer-events-none" />
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
