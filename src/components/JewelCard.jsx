@@ -31,7 +31,7 @@ export default function JewelCard({ jewel, index = 0 }) {
           style={{
             transform: `perspective(900px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg)`,
             transition: hovered ? 'transform .08s' : 'transform .5s ease',
-            boxShadow: hovered ? '0 24px 60px rgba(201,168,76,.12), 0 0 0 1px rgba(201,168,76,.15)' : '0 2px 12px rgba(0,0,0,.06)',
+            boxShadow: hovered ? '0 24px 60px rgba(168,117,30,.12), 0 0 0 1px rgba(168,117,30,.15)' : '0 2px 12px rgba(0,0,0,.06)',
           }}
           className="cursor-pointer group"
         >
@@ -54,19 +54,19 @@ export default function JewelCard({ jewel, index = 0 }) {
           </div>
 
           {/* info */}
-          <div className="p-5 bg-white border border-black/8 border-t-0">
+          <div className="p-3 sm:p-5 bg-white border border-black/8 border-t-0">
             <div className="flex items-start justify-between gap-3">
-              <h3 className="font-['Cormorant_Garamond',serif] text-lg text-black leading-snug group-hover:text-[#A8751E] transition-colors duration-300 flex-1 min-w-0">
+              <h3 className="font-['Cormorant_Garamond',serif] text-sm sm:text-lg text-black leading-snug group-hover:text-[#A8751E] transition-colors duration-300 flex-1 min-w-0">
                 {jewel.name}
               </h3>
-              <p className="text-[#A8751E] text-sm font-semibold whitespace-nowrap flex-shrink-0">₹{price}</p>
+              <p className="text-[#A8751E] text-xs sm:text-sm font-semibold whitespace-nowrap flex-shrink-0">₹{price}</p>
             </div>
             {jewel.material && (
-              <p className="text-black/40 text-[10px] tracking-[.2em] mt-1.5">{jewel.material.toUpperCase()}</p>
+              <p className="text-black/40 text-[10px] tracking-[.2em] mt-1 hidden sm:block">{jewel.material.toUpperCase()}</p>
             )}
-            <div className="flex items-center gap-2 mt-3">
+            <div className="flex items-center gap-1.5 mt-2">
               <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${inStock?'bg-green-500':'bg-red-400'}`} />
-              <span className={`text-[9px] tracking-[.2em] ${inStock?'text-green-600':'text-red-400'}`}>
+              <span className={`text-[8px] sm:text-[9px] tracking-[.15em] sm:tracking-[.2em] ${inStock?'text-green-600':'text-red-400'}`}>
                 {inStock ? 'IN STOCK' : 'OUT OF STOCK'}
               </span>
             </div>

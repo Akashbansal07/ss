@@ -93,7 +93,7 @@ export default function JewelDetail() {
             <Swiper modules={[Navigation,Pagination,Thumbs,Zoom]}
               thumbs={{ swiper: thumb&&!thumb.destroyed ? thumb : null }}
               zoom navigation pagination={{ clickable:true }}
-              className="aspect-square md:aspect-[4/5] bg-[#f5f5f5] mb-3"
+              className="aspect-square md:aspect-[4/5] bg-white mb-3"
               style={{ '--swiper-navigation-size':'18px' }}>
               {images.map((src,i) => (
                 <SwiperSlide key={i}>

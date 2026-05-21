@@ -65,8 +65,8 @@ export default function Collection() {
 
   return (
     <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
-      className="min-h-screen bg-white pt-28 pb-24">
-      <div className="max-w-7xl mx-auto px-8 sm:px-12 lg:px-20">
+      className="min-h-screen bg-white pt-24 pb-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-20">
 
         {/* header */}
         <div className="text-center mb-16">
@@ -142,7 +142,7 @@ export default function Collection() {
 
         {/* grid */}
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
             {Array.from({length:8}).map((_,i) => (
               <div key={i} className="aspect-[3/4] bg-black/4 animate-pulse" />
             ))}
@@ -164,7 +164,7 @@ export default function Collection() {
         ) : (
           <AnimatePresence mode="wait">
             <motion.div key={cat+search+sortBy} initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
               {filtered.map((j,i) => <JewelCard key={j.id} jewel={j} index={i} />)}
             </motion.div>
           </AnimatePresence>
