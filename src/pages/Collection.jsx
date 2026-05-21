@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { collection, getDocs, query, orderBy, where } from 'firebase/firestore';
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 import { db } from '../firebase';
 import JewelCard from '../components/JewelCard';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
 
 const CATS = ['All','Rings','Necklaces','Earrings','Bracelets','Pendants','Bangles','Anklets','Sets'];
 const SORTS = [['newest','Newest First'],['price-asc','Price: Low–High'],['price-desc','Price: High–Low'],['name','Name A–Z']];
+
+// Module-level cache — survives re-renders and page navigation within the session.
+// Cleared automatically when the browser tab is closed or refreshed.
+let _cache = null;
 
 export default function Collection() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -19,15 +23,21 @@ export default function Collection() {
 
   const cat = searchParams.get('category') || 'All';
 
+  // Scroll to top whenever the Collection page is entered
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, []);
+
   useEffect(() => {
     setLoading(true);
     (async () => {
       try {
-        const q = cat !== 'All'
-          ? query(collection(db,'jewelry'), where('category','==',cat), orderBy('createdAt','desc'))
-          : query(collection(db,'jewelry'), orderBy('createdAt','desc'));
-        const snap = await getDocs(q);
-        setJewels(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+        // Use cache if available — avoids re-fetching when switching categories
+        // or navigating back from a product page within the same session.
+        if (!_cache) {
+          const q = query(collection(db,'jewelry'), orderBy('createdAt','desc'));
+          const snap = await getDocs(q);
+          _cache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        }
+        setJewels(cat !== 'All' ? _cache.filter(j => j.category === cat) : _cache);
       } catch { setJewels([]); }
       finally  { setLoading(false); }
     })();

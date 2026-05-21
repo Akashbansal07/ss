@@ -140,7 +140,7 @@ export default function Home() {
         ))}
         {/* soft glow */}
         <div className="absolute inset-0"
-          style={{ background: 'radial-gradient(ellipse 60% 45% at 50% 55%, rgba(201,168,76,0.07), transparent)' }} />
+          style={{ background: 'radial-gradient(ellipse 60% 45% at 50% 55%, rgba(168,117,30,0.07), transparent)' }} />
 
         {/* hero content */}
         <motion.div style={{ y: heroY, opacity: heroOpacity }}
@@ -208,7 +208,7 @@ export default function Home() {
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.5 }}
           className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
           <div className="w-px h-14"
-            style={{ background: 'linear-gradient(to bottom, transparent, rgba(201,168,76,.55), transparent)' }} />
+            style={{ background: 'linear-gradient(to bottom, transparent, rgba(168,117,30,.55), transparent)' }} />
           <p className="text-[8px] text-black/25 tracking-[.5em]">SCROLL</p>
         </motion.div>
 
@@ -223,7 +223,7 @@ export default function Home() {
       <div className="border-y border-black/5 bg-[#fafafa] py-4 overflow-hidden">
         <div className="marquee-track inline-block">
           {[1,2,3,4].map(n => (
-            <span key={n} className="font-['Cormorant_Garamond',serif] italic text-lg tracking-[.35em] text-[#A8751E]/25 mr-0">
+            <span key={n} className="font-['Cormorant_Garamond',serif] italic text-lg tracking-[.35em] text-black mr-0">
               {MARQUEE_ITEMS}
             </span>
           ))}
@@ -294,7 +294,7 @@ export default function Home() {
 
             {/* left — paragraphs + CTA */}
             <div className="space-y-7 scroll-reveal">
-              <p className="text-black/70 text-base leading-[1.95]">
+              <p className="text-black text-base leading-[1.95]">
                 Founded in 2026, Shri Swastik was born from a passion for timeless beauty and
                 exceptional artisanship. We blend the rich heritage of traditional Indian jewellery-making
                 with a contemporary vision — creating pieces that honour life's most precious moments.
@@ -339,7 +339,7 @@ export default function Home() {
       <div className="border-y border-black/5 bg-[#f5f5f5] py-4 overflow-hidden">
         <div className="marquee-rev inline-block">
           {[1,2,3,4].map(n => (
-            <span key={n} className="font-['Cormorant_Garamond',serif] italic text-lg tracking-[.35em] text-[#A8751E]/20">
+            <span key={n} className="font-['Cormorant_Garamond',serif] italic text-lg tracking-[.35em] text-black">
               {MARQUEE_ITEMS}
             </span>
           ))}
@@ -380,7 +380,7 @@ export default function Home() {
                   <span className="absolute bottom-0 right-0 h-px w-5 bg-[#A8751E] scale-x-0 origin-right  group-hover:scale-x-100 transition-transform duration-500" />
                   <span className="absolute bottom-0 right-0 w-px h-5 bg-[#A8751E] scale-y-0 origin-bottom group-hover:scale-y-100 transition-transform duration-500" />
 
-                  <div className="text-[#A8751E]/20 group-hover:text-[#A8751E] transition-colors duration-500">
+                  <div className="text-black group-hover:text-[#A8751E] transition-colors duration-500">
                     <Icon />
                   </div>
                   <p className="text-black/40 text-[10px] tracking-[.3em] uppercase group-hover:text-[#A8751E] transition-colors duration-500 text-center">
@@ -424,7 +424,7 @@ export default function Home() {
                 <span className="absolute top-0 left-0 h-px w-10 bg-[#A8751E] scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-500" />
 
                 <div className="mb-8">
-                  <Icon size={20} className="text-[#A8751E]/25 group-hover:text-[#A8751E] transition-colors duration-500" />
+                  <Icon size={20} className="text-black group-hover:text-[#A8751E] transition-colors duration-500" />
                 </div>
                 <h3 className="font-['Cormorant_Garamond',serif] text-2xl text-black mb-4">{title}</h3>
                 <div className="w-7 h-px bg-black/8 mb-5 group-hover:bg-[#A8751E]/50 transition-colors duration-500" />
