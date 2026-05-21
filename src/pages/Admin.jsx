@@ -23,11 +23,11 @@ const EMPTY_FORM = {
 
 /* ── Reusable field ───────────────────────────── */
 function Field({ label, name, type = 'text', required, placeholder, as, value, onChange }) {
-  const base = 'w-full bg-[#0d0d0d] border border-white/10 px-4 py-3 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-gold/60 transition-colors rounded-none';
+  const base = 'w-full bg-white border border-black/10 px-4 py-3 text-sm text-black placeholder-black/30 focus:outline-none focus:border-[#A8751E]/60 transition-colors rounded-none';
 
   return (
     <div>
-      <label className="block text-[10px] text-gold tracking-[0.3em] mb-2">
+      <label className="block text-[10px] text-[#A8751E] tracking-[0.3em] mb-2">
         {label.toUpperCase()}
         {required && <span className="text-red-400 ml-1">*</span>}
       </label>
@@ -83,7 +83,7 @@ export default function Admin() {
     onDrop,
     accept: { 'image/*': [] },
     maxFiles: 10,
-    maxSize: 10 * 1024 * 1024, // 10MB per image
+    maxSize: 10 * 1024 * 1024,
   });
 
   const removeImage = (i) => setImages(prev => prev.filter((_, idx) => idx !== i));
@@ -200,9 +200,9 @@ export default function Admin() {
   ════════════════════════════════════════════ */
   if (!authed) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center px-4 sm:px-6">
+      <div className="min-h-screen bg-[#fafafa] flex items-center justify-center px-4 sm:px-6">
         {/* Background accent */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_50%,rgba(201,168,76,0.04),transparent)] pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_50%,rgba(201,168,76,0.05),transparent)] pointer-events-none" />
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -211,44 +211,48 @@ export default function Admin() {
           className="w-full max-w-sm relative"
         >
           {/* Card */}
-          <div className="border border-white/8 bg-[#080808] p-8 sm:p-10">
+          <div className="border border-black/8 bg-white p-8 sm:p-10 shadow-sm">
             {/* Header */}
             <div className="text-center mb-10">
-              <div className="w-14 h-14 border border-gold/30 flex items-center justify-center mx-auto mb-6">
-                <Lock size={20} className="text-gold" />
+              <div className="w-14 h-14 border border-[#A8751E]/30 flex items-center justify-center mx-auto mb-6">
+                <Lock size={20} className="text-[#A8751E]" />
               </div>
-              <p className="font-display text-3xl text-white tracking-widest mb-1">ADMIN</p>
-              <p className="text-gold/60 text-[9px] tracking-[0.4em]">SHRI SWASTIK PANEL</p>
+              <p className="font-['Cormorant_Garamond',serif] text-3xl text-black tracking-widest mb-1">ADMIN</p>
+              <p className="text-[#A8751E]/60 text-[9px] tracking-[0.4em]">SHRI SWASTIK PANEL</p>
             </div>
 
             <form onSubmit={login} className="space-y-5">
               <div>
-                <label className="block text-[10px] text-gold tracking-[0.3em] mb-2">PASSWORD</label>
+                <label className="block text-[10px] text-[#A8751E] tracking-[0.3em] mb-2">PASSWORD</label>
                 <input
                   type="password"
                   value={pwd}
                   onChange={e => { setPwd(e.target.value); setPwdErr(''); }}
                   placeholder="Enter admin password"
                   autoFocus
-                  className="w-full bg-[#0d0d0d] border border-white/10 px-4 py-3 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-gold/60 transition-colors"
+                  className="w-full bg-white border border-black/10 px-4 py-3 text-sm text-black placeholder-black/30 focus:outline-none focus:border-[#A8751E]/60 transition-colors"
                 />
                 {pwdErr && (
                   <motion.p
                     initial={{ opacity: 0, y: -4 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-red-400 text-xs mt-2 tracking-wide"
+                    className="text-red-500 text-xs mt-2 tracking-wide"
                   >
                     {pwdErr}
                   </motion.p>
                 )}
               </div>
 
-              <button type="submit" className="btn-gold w-full">
-                <span>Unlock Panel</span>
+              <button type="submit"
+                className="relative w-full inline-flex items-center justify-center gap-2 px-10 py-4
+                           border border-[#A8751E] text-[#A8751E] text-[11px] tracking-[.25em] uppercase
+                           overflow-hidden hover:text-white group transition-colors duration-500">
+                <span className="absolute inset-0 bg-[#A8751E] -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
+                <span className="relative z-10">Unlock Panel</span>
               </button>
             </form>
 
-            <p className="text-gray-600 text-[10px] text-center mt-8 tracking-wider">
+            <p className="text-black/30 text-[10px] text-center mt-8 tracking-wider">
               This page is restricted to authorised personnel only.
             </p>
           </div>
@@ -261,19 +265,19 @@ export default function Admin() {
      ADMIN DASHBOARD
   ════════════════════════════════════════════ */
   return (
-    <div className="min-h-screen bg-[#070707]">
+    <div className="min-h-screen bg-[#fafafa]">
 
       {/* ── Top bar ── */}
-      <div className="sticky top-0 z-40 border-b border-white/6 bg-[#070707]/95 backdrop-blur-xl">
+      <div className="sticky top-0 z-40 border-b border-black/6 bg-white/95 backdrop-blur-xl shadow-sm">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
           <div>
-            <p className="font-display text-lg sm:text-xl text-white tracking-widest">SHRI SWASTIK</p>
-            <p className="text-gold/50 text-[8px] tracking-[0.4em] hidden sm:block">ADMIN PANEL</p>
+            <p className="font-['Cormorant_Garamond',serif] text-lg sm:text-xl text-black tracking-widest">SHRI SWASTIK</p>
+            <p className="text-[#A8751E]/60 text-[8px] tracking-[0.4em] hidden sm:block">ADMIN PANEL</p>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Tab switcher */}
-            <div className="flex border border-white/8">
+            <div className="flex border border-black/10">
               {[
                 { key: 'upload', icon: <Plus size={14} />, label: 'Add' },
                 { key: 'manage', icon: <LayoutGrid size={14} />, label: 'Manage' },
@@ -283,8 +287,8 @@ export default function Admin() {
                   onClick={() => setTab(key)}
                   className={`flex items-center gap-1.5 px-3 sm:px-4 py-2.5 text-[10px] tracking-wider transition-all duration-200 ${
                     tab === key
-                      ? 'bg-gold text-black font-medium'
-                      : 'text-gray-400 hover:text-white hover:bg-white/4'
+                      ? 'bg-[#A8751E] text-white font-medium'
+                      : 'text-black/50 hover:text-black hover:bg-black/4'
                   }`}
                 >
                   {icon}
@@ -294,15 +298,15 @@ export default function Admin() {
             </div>
 
             {/* Jewel count badge */}
-            <div className="hidden sm:flex items-center gap-1.5 px-3 py-2 border border-white/6 text-[10px] text-gray-400 tracking-wider">
-              <Package size={12} className="text-gold" />
+            <div className="hidden sm:flex items-center gap-1.5 px-3 py-2 border border-black/8 text-[10px] text-black/40 tracking-wider">
+              <Package size={12} className="text-[#A8751E]" />
               {jewels.length} pieces
             </div>
 
             {/* Logout */}
             <button
               onClick={logout}
-              className="flex items-center gap-1.5 px-3 py-2.5 text-[10px] text-gray-500 hover:text-red-400 border border-white/6 hover:border-red-500/30 tracking-wider transition-all"
+              className="flex items-center gap-1.5 px-3 py-2.5 text-[10px] text-black/40 hover:text-red-500 border border-black/8 hover:border-red-400/40 tracking-wider transition-all"
             >
               <LogOut size={13} />
               <span className="hidden sm:inline">Logout</span>
@@ -327,15 +331,15 @@ export default function Admin() {
               className="space-y-8"
             >
               <div>
-                <h2 className="font-display text-2xl sm:text-3xl text-white mb-1">Add New Jewellery</h2>
-                <p className="text-gray-500 text-xs tracking-wider">Fill in the details and upload images to list a piece.</p>
+                <h2 className="font-['Cormorant_Garamond',serif] text-2xl sm:text-3xl text-black mb-1">Add New Jewellery</h2>
+                <p className="text-black/40 text-xs tracking-wider">Fill in the details and upload images to list a piece.</p>
               </div>
 
               {/* ── Image Upload ── */}
               <div className="space-y-4">
-                <p className="text-[10px] text-gold tracking-[0.3em]">
+                <p className="text-[10px] text-[#A8751E] tracking-[0.3em]">
                   IMAGES <span className="text-red-400">*</span>
-                  <span className="text-gray-600 ml-2 tracking-normal normal-case">(max 10, first image = main)</span>
+                  <span className="text-black/30 ml-2 tracking-normal normal-case">(max 10, first image = main)</span>
                 </p>
 
                 {/* Dropzone */}
@@ -343,16 +347,16 @@ export default function Admin() {
                   {...getRootProps()}
                   className={`border-2 border-dashed p-8 sm:p-12 text-center cursor-pointer transition-all duration-300 ${
                     isDragActive
-                      ? 'border-gold bg-gold/5'
-                      : 'border-white/12 hover:border-white/25 hover:bg-white/2'
+                      ? 'border-[#A8751E] bg-[#A8751E]/5'
+                      : 'border-black/12 hover:border-black/25 hover:bg-black/2'
                   }`}
                 >
                   <input {...getInputProps()} />
-                  <ImageIcon size={28} className="text-gray-600 mx-auto mb-4" />
-                  <p className="text-gray-300 text-sm mb-1">
+                  <ImageIcon size={28} className="text-black/25 mx-auto mb-4" />
+                  <p className="text-black/60 text-sm mb-1">
                     {isDragActive ? 'Drop images here…' : 'Drag & drop images here'}
                   </p>
-                  <p className="text-gray-600 text-xs">or click to browse · JPG, PNG, WebP · Max 10MB each</p>
+                  <p className="text-black/30 text-xs">or click to browse · JPG, PNG, WebP · Max 10MB each</p>
                 </div>
 
                 {/* Image previews */}
@@ -371,10 +375,10 @@ export default function Admin() {
                           onClick={() => removeImage(i)}
                           className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
                         >
-                          <X size={10} />
+                          <X size={10} className="text-white" />
                         </button>
                         {i === 0 && (
-                          <div className="absolute bottom-0 left-0 right-0 bg-gold text-black text-[8px] text-center py-0.5 tracking-wider font-medium">
+                          <div className="absolute bottom-0 left-0 right-0 bg-[#A8751E] text-white text-[8px] text-center py-0.5 tracking-wider font-medium">
                             MAIN
                           </div>
                         )}
@@ -384,10 +388,10 @@ export default function Admin() {
                     {images.length < 10 && (
                       <div
                         {...getRootProps()}
-                        className="aspect-square border border-dashed border-white/15 flex items-center justify-center cursor-pointer hover:border-gold/40 hover:bg-gold/3 transition-all"
+                        className="aspect-square border border-dashed border-black/15 flex items-center justify-center cursor-pointer hover:border-[#A8751E]/50 hover:bg-[#A8751E]/3 transition-all"
                       >
                         <input {...getInputProps()} />
-                        <Plus size={18} className="text-gray-600" />
+                        <Plus size={18} className="text-black/30" />
                       </div>
                     )}
                   </div>
@@ -403,14 +407,14 @@ export default function Admin() {
                 />
 
                 <div>
-                  <label className="block text-[10px] text-gold tracking-[0.3em] mb-2">
+                  <label className="block text-[10px] text-[#A8751E] tracking-[0.3em] mb-2">
                     CATEGORY <span className="text-red-400">*</span>
                   </label>
                   <select
                     name="category"
                     value={form.category}
                     onChange={handleChange}
-                    className="w-full bg-[#0d0d0d] border border-white/10 px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-gold/60 transition-colors"
+                    className="w-full bg-white border border-black/10 px-4 py-3 text-sm text-black focus:outline-none focus:border-[#A8751E]/60 transition-colors"
                   >
                     <option value="">Select category…</option>
                     {CATS.map(c => <option key={c} value={c}>{c}</option>)}
@@ -424,12 +428,12 @@ export default function Admin() {
                 />
 
                 <div>
-                  <label className="block text-[10px] text-gold tracking-[0.3em] mb-2">MATERIAL</label>
+                  <label className="block text-[10px] text-[#A8751E] tracking-[0.3em] mb-2">MATERIAL</label>
                   <select
                     name="material"
                     value={form.material}
                     onChange={handleChange}
-                    className="w-full bg-[#0d0d0d] border border-white/10 px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-gold/60 transition-colors"
+                    className="w-full bg-white border border-black/10 px-4 py-3 text-sm text-black focus:outline-none focus:border-[#A8751E]/60 transition-colors"
                   >
                     <option value="">Select material…</option>
                     {MATERIALS.map(m => <option key={m} value={m}>{m}</option>)}
@@ -462,13 +466,17 @@ export default function Admin() {
               />
 
               {/* Submit row */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2 border-t border-white/5">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2 border-t border-black/5">
                 <button
                   type="submit"
                   disabled={uploading}
-                  className="btn-gold sm:min-w-[200px] disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="relative sm:min-w-[200px] inline-flex items-center justify-center gap-2 px-10 py-4
+                             border border-[#A8751E] text-[#A8751E] text-[11px] tracking-[.25em] uppercase
+                             overflow-hidden hover:text-white group transition-colors duration-500
+                             disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <span>
+                  <span className="absolute inset-0 bg-[#A8751E] -translate-x-full group-hover:translate-x-0 transition-transform duration-500 disabled:hidden" />
+                  <span className="relative z-10 flex items-center gap-2">
                     {uploading
                       ? <><Loader2 size={14} className="animate-spin" /> Uploading…</>
                       : <><Upload size={14} /> Add Jewellery</>}
@@ -477,7 +485,7 @@ export default function Admin() {
                 <button
                   type="button"
                   onClick={() => { setForm(EMPTY_FORM); setImages([]); }}
-                  className="text-xs text-gray-500 hover:text-gray-300 tracking-widest transition-colors py-2 sm:py-0"
+                  className="text-xs text-black/35 hover:text-black tracking-widest transition-colors py-2 sm:py-0"
                 >
                   CLEAR FORM
                 </button>
@@ -496,15 +504,15 @@ export default function Admin() {
             >
               <div className="flex items-center justify-between mb-7 flex-wrap gap-3">
                 <div>
-                  <h2 className="font-display text-2xl sm:text-3xl text-white mb-1">Manage Inventory</h2>
-                  <p className="text-gray-500 text-xs tracking-wider">
+                  <h2 className="font-['Cormorant_Garamond',serif] text-2xl sm:text-3xl text-black mb-1">Manage Inventory</h2>
+                  <p className="text-black/40 text-xs tracking-wider">
                     {jewels.length} {jewels.length === 1 ? 'piece' : 'pieces'} listed
                   </p>
                 </div>
                 <button
                   onClick={fetchJewels}
                   disabled={loadingJewels}
-                  className="text-[10px] tracking-widest text-gray-500 hover:text-gold border border-white/8 hover:border-gold/30 px-4 py-2.5 transition-all flex items-center gap-2"
+                  className="text-[10px] tracking-widest text-black/40 hover:text-[#A8751E] border border-black/8 hover:border-[#A8751E]/40 px-4 py-2.5 transition-all flex items-center gap-2"
                 >
                   {loadingJewels ? <Loader2 size={12} className="animate-spin" /> : null}
                   REFRESH
@@ -514,18 +522,22 @@ export default function Admin() {
               {loadingJewels ? (
                 <div className="space-y-3">
                   {Array.from({ length: 4 }).map((_, i) => (
-                    <div key={i} className="h-20 bg-white/3 animate-pulse" />
+                    <div key={i} className="h-20 bg-black/4 animate-pulse" />
                   ))}
                 </div>
               ) : jewels.length === 0 ? (
-                <div className="text-center py-20 sm:py-28 border border-white/6">
+                <div className="text-center py-20 sm:py-28 border border-black/6">
                   <p className="text-4xl sm:text-5xl mb-5">💍</p>
-                  <h3 className="font-display text-2xl text-white italic mb-3">No Jewellery Yet</h3>
-                  <p className="text-gray-500 text-xs tracking-widest mb-7">
+                  <h3 className="font-['Cormorant_Garamond',serif] text-2xl text-black italic mb-3">No Jewellery Yet</h3>
+                  <p className="text-black/40 text-xs tracking-widest mb-7">
                     Upload your first piece to get started
                   </p>
-                  <button onClick={() => setTab('upload')} className="btn-gold">
-                    <span><Plus size={14} /> Add Jewellery</span>
+                  <button onClick={() => setTab('upload')}
+                    className="relative inline-flex items-center justify-center gap-2 px-10 py-4
+                               border border-[#A8751E] text-[#A8751E] text-[11px] tracking-[.25em] uppercase
+                               overflow-hidden hover:text-white group transition-colors duration-500">
+                    <span className="absolute inset-0 bg-[#A8751E] -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
+                    <span className="relative z-10 flex items-center gap-2"><Plus size={14} /> Add Jewellery</span>
                   </button>
                 </div>
               ) : (
@@ -539,15 +551,15 @@ export default function Admin() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, x: -30 }}
                         transition={{ duration: 0.3 }}
-                        className="flex items-center gap-3 sm:gap-4 border border-white/6 p-3 sm:p-4 hover:border-white/12 transition-colors group bg-[#0a0a0a]"
+                        className="flex items-center gap-3 sm:gap-4 border border-black/6 p-3 sm:p-4 hover:border-black/12 transition-colors group bg-white"
                       >
                         {/* Thumbnail */}
                         <div
-                          className="w-14 h-14 sm:w-16 sm:h-16 flex-shrink-0 bg-[#111] overflow-hidden cursor-pointer"
+                          className="w-14 h-14 sm:w-16 sm:h-16 flex-shrink-0 bg-[#f5f5f5] overflow-hidden cursor-pointer"
                           onClick={() => j.images?.[0] && setPreview(j.images[0])}
                         >
                           <img
-                            src={j.images?.[0] || 'https://placehold.co/64x64/111/C9A84C?text=✦'}
+                            src={j.images?.[0] || 'https://placehold.co/64x64/f5f5f5/C9A84C?text=✦'}
                             alt={j.name}
                             className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                           />
@@ -555,18 +567,18 @@ export default function Admin() {
 
                         {/* Info */}
                         <div className="flex-1 min-w-0">
-                          <p className="text-white text-sm font-medium truncate">{j.name}</p>
+                          <p className="text-black text-sm font-medium truncate">{j.name}</p>
                           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1.5">
                             {j.category && (
-                              <span className="text-[9px] text-gold tracking-wider">{j.category}</span>
+                              <span className="text-[9px] text-[#A8751E] tracking-wider">{j.category}</span>
                             )}
-                            <span className="text-gray-300 text-xs">
+                            <span className="text-black/60 text-xs">
                               ₹{Number(j.price).toLocaleString('en-IN')}
                             </span>
-                            <span className="text-gray-600 text-[9px]">
+                            <span className="text-black/30 text-[9px]">
                               {j.images?.length || 0} photo{j.images?.length !== 1 ? 's' : ''}
                             </span>
-                            <span className={`text-[9px] tracking-wider ${Number(j.quantity) > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                            <span className={`text-[9px] tracking-wider ${Number(j.quantity) > 0 ? 'text-green-600' : 'text-red-400'}`}>
                               {Number(j.quantity) > 0 ? `${j.quantity} in stock` : 'Out of stock'}
                             </span>
                           </div>
@@ -578,7 +590,7 @@ export default function Admin() {
                             href={`/jewelry/${j.id}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="p-2 text-gray-600 hover:text-gold transition-colors"
+                            className="p-2 text-black/30 hover:text-[#A8751E] transition-colors"
                             title="Preview"
                           >
                             <Eye size={15} />
@@ -586,7 +598,7 @@ export default function Admin() {
                           <button
                             onClick={() => handleDelete(j)}
                             disabled={deleting === j.id}
-                            className="p-2 text-gray-600 hover:text-red-400 transition-colors disabled:opacity-40"
+                            className="p-2 text-black/30 hover:text-red-500 transition-colors disabled:opacity-40"
                             title="Delete"
                           >
                             {deleting === j.id
@@ -612,7 +624,7 @@ export default function Admin() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setPreview(null)}
-            className="fixed inset-0 z-50 bg-black/92 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8"
+            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8"
           >
             <motion.img
               initial={{ scale: 0.9 }}

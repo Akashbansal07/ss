@@ -40,20 +40,20 @@ export default function JewelDetail() {
   };
 
   if (loading) return (
-    <div className="min-h-screen bg-black pt-28 flex items-center justify-center">
+    <div className="min-h-screen bg-white pt-28 flex items-center justify-center">
       <div className="text-center">
-        <div className="w-10 h-10 border border-[#C9A84C]/30 border-t-[#C9A84C] rounded-full animate-spin mx-auto mb-4" />
-        <p className="text-gray-500 text-[10px] tracking-widest">LOADING</p>
+        <div className="w-10 h-10 border border-[#A8751E]/30 border-t-[#A8751E] rounded-full animate-spin mx-auto mb-4" />
+        <p className="text-black/30 text-[10px] tracking-widest">LOADING</p>
       </div>
     </div>
   );
 
   if (!jewel) return (
-    <div className="min-h-screen bg-black pt-28 flex flex-col items-center justify-center text-center px-6">
+    <div className="min-h-screen bg-white pt-28 flex flex-col items-center justify-center text-center px-6">
       <p className="text-5xl mb-5">✦</p>
-      <h2 className="font-['Cormorant_Garamond',serif] text-3xl text-white italic mb-4">Jewel Not Found</h2>
+      <h2 className="font-['Cormorant_Garamond',serif] text-3xl text-black italic mb-4">Jewel Not Found</h2>
       <Link to="/collection">
-        <button className="mt-4 border border-[#C9A84C] text-[#C9A84C] text-[10px] tracking-[.25em] uppercase px-8 py-4 hover:bg-[#C9A84C] hover:text-black transition-all duration-400 flex items-center gap-2">
+        <button className="mt-4 border border-[#A8751E] text-[#A8751E] text-[10px] tracking-[.25em] uppercase px-8 py-4 hover:bg-[#A8751E] hover:text-white transition-all duration-400 flex items-center gap-2">
           <ArrowLeft size={13} /> Back to Collection
         </button>
       </Link>
@@ -61,7 +61,7 @@ export default function JewelDetail() {
   );
 
   const price   = Number(jewel.price).toLocaleString('en-IN');
-  const images  = jewel.images?.length ? jewel.images : ['https://placehold.co/600x700/111/C9A84C?text=✦'];
+  const images  = jewel.images?.length ? jewel.images : ['https://placehold.co/600x700/f5f5f5/C9A84C?text=✦'];
   const inStock = Number(jewel.quantity) > 0;
 
   const details = [
@@ -74,16 +74,16 @@ export default function JewelDetail() {
 
   return (
     <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
-      className="min-h-screen bg-black pt-20 sm:pt-24 pb-20">
+      className="min-h-screen bg-white pt-20 sm:pt-24 pb-20">
       <div className="max-w-7xl mx-auto px-8 sm:px-12 lg:px-20">
 
         {/* breadcrumb */}
-        <div className="flex items-center gap-2 text-[9px] tracking-widest text-gray-600 mb-10 flex-wrap">
-          <Link to="/" className="hover:text-[#C9A84C] transition-colors">HOME</Link>
+        <div className="flex items-center gap-2 text-[9px] tracking-widest text-black/30 mb-10 flex-wrap">
+          <Link to="/" className="hover:text-[#A8751E] transition-colors">HOME</Link>
           <ChevronRight size={10} />
-          <Link to="/collection" className="hover:text-[#C9A84C] transition-colors">COLLECTION</Link>
+          <Link to="/collection" className="hover:text-[#A8751E] transition-colors">COLLECTION</Link>
           <ChevronRight size={10} />
-          <span className="text-gray-400 truncate">{jewel.name?.toUpperCase()}</span>
+          <span className="text-black/50 truncate">{jewel.name?.toUpperCase()}</span>
         </div>
 
         <div className="grid md:grid-cols-2 gap-10 lg:gap-20">
@@ -93,7 +93,7 @@ export default function JewelDetail() {
             <Swiper modules={[Navigation,Pagination,Thumbs,Zoom]}
               thumbs={{ swiper: thumb&&!thumb.destroyed ? thumb : null }}
               zoom navigation pagination={{ clickable:true }}
-              className="aspect-square md:aspect-[4/5] bg-[#111] mb-3"
+              className="aspect-square md:aspect-[4/5] bg-[#f5f5f5] mb-3"
               style={{ '--swiper-navigation-size':'18px' }}>
               {images.map((src,i) => (
                 <SwiperSlide key={i}>
@@ -119,22 +119,22 @@ export default function JewelDetail() {
           {/* info */}
           <motion.div initial={{ opacity:0,x:30 }} animate={{ opacity:1,x:0 }} transition={{ duration:.8 }}
             className="flex flex-col">
-            {jewel.category && <p className="text-[#C9A84C] text-[10px] tracking-[.4em] mb-4">{jewel.category.toUpperCase()}</p>}
+            {jewel.category && <p className="text-[#A8751E] text-[10px] tracking-[.4em] mb-4">{jewel.category.toUpperCase()}</p>}
 
-            <h1 className="font-['Cormorant_Garamond',serif] text-4xl sm:text-5xl lg:text-6xl text-white leading-tight mb-5">
+            <h1 className="font-['Cormorant_Garamond',serif] text-4xl sm:text-5xl lg:text-6xl text-black leading-tight mb-5">
               {jewel.name}
             </h1>
 
             <div className="flex items-center gap-4 mb-7 flex-wrap">
-              <p className="font-['Cormorant_Garamond',serif] text-3xl text-[#C9A84C]">₹{price}</p>
-              <span className={`px-3 py-1.5 text-[9px] tracking-widest border ${inStock?'border-green-700/50 text-green-400 bg-green-900/10':'border-red-700/50 text-red-400 bg-red-900/10'}`}>
+              <p className="font-['Cormorant_Garamond',serif] text-3xl text-[#A8751E]">₹{price}</p>
+              <span className={`px-3 py-1.5 text-[9px] tracking-widest border ${inStock?'border-green-500/40 text-green-600 bg-green-50':'border-red-400/40 text-red-500 bg-red-50'}`}>
                 {inStock?'IN STOCK':'OUT OF STOCK'}
               </span>
             </div>
 
             {jewel.description && (
-              <div className="mb-7 pb-7 border-b border-white/8">
-                <p className="text-gray-300 text-sm leading-relaxed">{jewel.description}</p>
+              <div className="mb-7 pb-7 border-b border-black/8">
+                <p className="text-black/60 text-sm leading-relaxed">{jewel.description}</p>
               </div>
             )}
 
@@ -142,9 +142,9 @@ export default function JewelDetail() {
               <div className="mb-8 space-y-3.5">
                 {details.map(({ Icon,label,value }) => (
                   <div key={label} className="flex items-center gap-4">
-                    <Icon size={14} className="text-[#C9A84C] flex-shrink-0" />
-                    <span className="text-gray-500 text-xs tracking-widest w-24 flex-shrink-0">{label}</span>
-                    <span className="text-gray-200 text-xs">{value}</span>
+                    <Icon size={14} className="text-[#A8751E] flex-shrink-0" />
+                    <span className="text-black/35 text-xs tracking-widest w-24 flex-shrink-0">{label}</span>
+                    <span className="text-black/70 text-xs">{value}</span>
                   </div>
                 ))}
               </div>
@@ -154,27 +154,27 @@ export default function JewelDetail() {
               <motion.button whileHover={{ scale:inStock?1.02:1 }} whileTap={{ scale:inStock?.97:1 }}
                 onClick={wa} disabled={!inStock}
                 className="whatsapp-pulse w-full flex items-center justify-center gap-3 py-4
-                           bg-[#25D366] text-black text-xs tracking-widest uppercase font-semibold
+                           bg-[#25D366] text-white text-xs tracking-widest uppercase font-semibold
                            disabled:opacity-40 disabled:cursor-not-allowed disabled:animate-none">
                 <MessageCircle size={18} />
                 {inStock ? 'Order via WhatsApp' : 'Currently Out of Stock'}
               </motion.button>
 
               <button onClick={share}
-                className="w-full py-4 border border-white/10 text-gray-400 text-xs tracking-widest uppercase
-                           hover:border-[#C9A84C]/40 hover:text-[#C9A84C] transition-all duration-300 flex items-center justify-center gap-2">
+                className="w-full py-4 border border-black/10 text-black/40 text-xs tracking-widest uppercase
+                           hover:border-[#A8751E]/50 hover:text-[#A8751E] transition-all duration-300 flex items-center justify-center gap-2">
                 <Share2 size={13} /> Share This Piece
               </button>
             </div>
 
-            <p className="text-gray-600 text-[10px] text-center mt-5 leading-relaxed tracking-wider">
+            <p className="text-black/30 text-[10px] text-center mt-5 leading-relaxed tracking-wider">
               Tapping "Order via WhatsApp" opens a chat with our team.<br />
               We'll confirm availability and arrange delivery for you.
             </p>
 
-            <div className="mt-7 pt-7 border-t border-white/6">
+            <div className="mt-7 pt-7 border-t border-black/6">
               <Link to="/collection"
-                className="inline-flex items-center gap-2 text-gray-500 hover:text-[#C9A84C] text-[10px] tracking-widest uppercase transition-colors">
+                className="inline-flex items-center gap-2 text-black/35 hover:text-[#A8751E] text-[10px] tracking-widest uppercase transition-colors">
                 <ArrowLeft size={12} /> Back to Collection
               </Link>
             </div>

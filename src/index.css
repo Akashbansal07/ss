@@ -32,7 +32,7 @@
   animation: shimmer 4s linear infinite;
 }
 .loading-bar {
-  background: linear-gradient(90deg,transparent,#C9A84C,#F5E6A3,#C9A84C,transparent);
+  background: linear-gradient(90deg,transparent,#A8751E,#F5E6A3,#A8751E,transparent);
   background-size: 200% 100%;
   animation: shimmer 1.5s linear infinite;
 }
@@ -44,7 +44,7 @@
   position: fixed; top: 0; left: 0; border-radius: 50%;
   transform: translate(-50%,-50%); pointer-events: none; z-index: 9999;
 }
-.cursor-dot  { width:6px; height:6px; background:#C9A84C; }
+.cursor-dot  { width:6px; height:6px; background:#A8751E; }
 .cursor-ring {
   width:32px; height:32px; border:1px solid rgba(201,168,76,.5);
   transition: width .3s, height .3s, border-color .3s;
@@ -53,7 +53,7 @@
 @media (pointer:coarse){ html { cursor: auto; } .cursor-dot,.cursor-ring { display:none; } }
 html { cursor: none; scroll-behavior: smooth; }
 
-::selection { background: rgba(201,168,76,.25); color:#fff; }
+::selection { background: rgba(201,168,76,.25); color:#000; }
 ::-webkit-scrollbar       { width:3px; }
-::-webkit-scrollbar-track { background:#000; }
-::-webkit-scrollbar-thumb { background:#C9A84C; }
+::-webkit-scrollbar-track { background:#fff; }
+::-webkit-scrollbar-thumb { background:#A8751E; }
