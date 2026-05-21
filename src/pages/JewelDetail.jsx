@@ -5,224 +5,179 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Thumbs, Zoom } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/thumbs';
-import 'swiper/css/zoom';
-import { MessageCircle, ArrowLeft, Tag, Layers, Weight, Ruler, Package, ChevronRight } from 'lucide-react';
+import 'swiper/css'; import 'swiper/css/navigation'; import 'swiper/css/pagination';
+import 'swiper/css/thumbs'; import 'swiper/css/zoom';
+import { MessageCircle, ArrowLeft, Tag, Layers, Weight, Ruler, Package, ChevronRight, Share2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function JewelDetail() {
   const { id } = useParams();
-  const [jewel, setJewel] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const [jewel,setJewel] = useState(null);
+  const [loading,setLoading] = useState(true);
+  const [thumb,setThumb] = useState(null);
 
   useEffect(() => {
+    window.scrollTo(0,0);
     (async () => {
       try {
-        const snap = await getDoc(doc(db, 'jewelry', id));
-        if (snap.exists()) setJewel({ id: snap.id, ...snap.data() });
-      } catch {
-        setJewel(null);
-      } finally {
-        setLoading(false);
-      }
+        const snap = await getDoc(doc(db,'jewelry',id));
+        if (snap.exists()) setJewel({ id:snap.id, ...snap.data() });
+      } catch { setJewel(null); }
+      finally { setLoading(false); }
     })();
-  }, [id]);
+  },[id]);
 
-  const handleWhatsApp = () => {
+  const wa = () => {
     if (!jewel) return;
     const phone = import.meta.env.VITE_WHATSAPP_NUMBER;
-    const url = window.location.href;
-    const msg = encodeURIComponent(
-      `Hey! 👋 I want to order *${jewel.name}* from Shri Swastik 💍\n\n` +
-      `Product Link: ${url}\n\n` +
-      `Kindly let me know about availability, pricing, and delivery. Thank you! 🙏`
-    );
-    window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+    const msg = encodeURIComponent(`Hey! 👋 I want to order *${jewel.name}* from Shri Swastik 💍\n\nProduct Link: ${window.location.href}\n\nKindly let me know about availability, pricing, and delivery. Thank you! 🙏`);
+    window.open(`https://wa.me/${phone}?text=${msg}`,'_blank');
   };
 
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({ title: jewel?.name, url: window.location.href });
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      toast.success('Link copied to clipboard');
-    }
+  const share = async () => {
+    if (navigator.share) { try { await navigator.share({ title:jewel?.name, url:window.location.href }); } catch {} }
+    else { await navigator.clipboard.writeText(window.location.href); toast.success('Link copied!'); }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-black pt-28 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-10 h-10 border border-gold/30 border-t-gold rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600 text-xs tracking-widest">LOADING</p>
-        </div>
+  if (loading) return (
+    <div className="min-h-screen bg-black pt-28 flex items-center justify-center">
+      <div className="text-center">
+        <div className="w-10 h-10 border border-[#C9A84C]/30 border-t-[#C9A84C] rounded-full animate-spin mx-auto mb-4" />
+        <p className="text-gray-500 text-[10px] tracking-widest">LOADING</p>
       </div>
-    );
-  }
+    </div>
+  );
 
-  if (!jewel) {
-    return (
-      <div className="min-h-screen bg-black pt-28 flex flex-col items-center justify-center text-center px-6">
-        <p className="text-5xl mb-4">💍</p>
-        <h2 className="font-display text-3xl text-white italic mb-4">Jewel Not Found</h2>
-        <Link to="/collection">
-          <button className="btn-gold mt-4"><span><ArrowLeft size={13} /> Back to Collection</span></button>
-        </Link>
-      </div>
-    );
-  }
+  if (!jewel) return (
+    <div className="min-h-screen bg-black pt-28 flex flex-col items-center justify-center text-center px-6">
+      <p className="text-5xl mb-5">✦</p>
+      <h2 className="font-['Cormorant_Garamond',serif] text-3xl text-white italic mb-4">Jewel Not Found</h2>
+      <Link to="/collection">
+        <button className="mt-4 border border-[#C9A84C] text-[#C9A84C] text-[10px] tracking-[.25em] uppercase px-8 py-4 hover:bg-[#C9A84C] hover:text-black transition-all duration-400 flex items-center gap-2">
+          <ArrowLeft size={13} /> Back to Collection
+        </button>
+      </Link>
+    </div>
+  );
 
-  const price = Number(jewel.price).toLocaleString('en-IN');
-  const images = jewel.images?.length ? jewel.images : ['https://placehold.co/600x700/111/C9A84C?text=✦'];
+  const price   = Number(jewel.price).toLocaleString('en-IN');
+  const images  = jewel.images?.length ? jewel.images : ['https://placehold.co/600x700/111/C9A84C?text=✦'];
+  const inStock = Number(jewel.quantity) > 0;
 
   const details = [
-    jewel.category && { Icon: Tag, label: 'Category', value: jewel.category },
-    jewel.material && { Icon: Layers, label: 'Material', value: jewel.material },
-    jewel.weight && { Icon: Weight, label: 'Weight', value: jewel.weight },
-    jewel.dimensions && { Icon: Ruler, label: 'Dimensions', value: jewel.dimensions },
-    jewel.quantity != null && { Icon: Package, label: 'Availability', value: Number(jewel.quantity) > 0 ? `${jewel.quantity} in stock` : 'Out of Stock' },
+    jewel.category   && { Icon:Tag,     label:'Category',   value:jewel.category },
+    jewel.material   && { Icon:Layers,  label:'Material',   value:jewel.material },
+    jewel.weight     && { Icon:Weight,  label:'Weight',     value:jewel.weight },
+    jewel.dimensions && { Icon:Ruler,   label:'Dimensions', value:jewel.dimensions },
+    jewel.quantity!=null && { Icon:Package, label:'Stock',  value: inStock ? `${jewel.quantity} in stock` : 'Out of Stock' },
   ].filter(Boolean);
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className="min-h-screen bg-black pt-24 pb-20"
-    >
-      {/* Breadcrumb */}
-      <div className="max-w-7xl mx-auto px-6 mb-12">
-        <div className="flex items-center gap-2 text-[10px] tracking-widest text-gray-600">
-          <Link to="/" className="hover:text-gold transition-colors">HOME</Link>
-          <ChevronRight size={10} />
-          <Link to="/collection" className="hover:text-gold transition-colors">COLLECTION</Link>
-          <ChevronRight size={10} />
-          <span className="text-gray-400">{jewel.name?.toUpperCase()}</span>
-        </div>
-      </div>
+    <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
+      className="min-h-screen bg-black pt-20 sm:pt-24 pb-20">
+      <div className="max-w-7xl mx-auto px-8 sm:px-12 lg:px-20">
 
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
-          {/* Images */}
-          <div>
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            >
-              {/* Main Swiper */}
-              <Swiper
-                modules={[Navigation, Pagination, Thumbs, Zoom]}
-                thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
-                zoom
-                navigation
-                pagination={{ clickable: true }}
-                className="aspect-square md:aspect-[4/5] bg-card mb-3"
-                style={{ '--swiper-navigation-size': '20px' }}
-              >
-                {images.map((src, i) => (
-                  <SwiperSlide key={i}>
-                    <div className="swiper-zoom-container w-full h-full">
-                      <img src={src} alt={`${jewel.name} ${i + 1}`} className="w-full h-full object-cover" />
-                    </div>
+        {/* breadcrumb */}
+        <div className="flex items-center gap-2 text-[9px] tracking-widest text-gray-600 mb-10 flex-wrap">
+          <Link to="/" className="hover:text-[#C9A84C] transition-colors">HOME</Link>
+          <ChevronRight size={10} />
+          <Link to="/collection" className="hover:text-[#C9A84C] transition-colors">COLLECTION</Link>
+          <ChevronRight size={10} />
+          <span className="text-gray-400 truncate">{jewel.name?.toUpperCase()}</span>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-10 lg:gap-20">
+
+          {/* images */}
+          <motion.div initial={{ opacity:0,x:-30 }} animate={{ opacity:1,x:0 }} transition={{ duration:.8 }}>
+            <Swiper modules={[Navigation,Pagination,Thumbs,Zoom]}
+              thumbs={{ swiper: thumb&&!thumb.destroyed ? thumb : null }}
+              zoom navigation pagination={{ clickable:true }}
+              className="aspect-square md:aspect-[4/5] bg-[#111] mb-3"
+              style={{ '--swiper-navigation-size':'18px' }}>
+              {images.map((src,i) => (
+                <SwiperSlide key={i}>
+                  <div className="swiper-zoom-container w-full h-full">
+                    <img src={src} alt={`${jewel.name} ${i+1}`} className="w-full h-full object-cover" />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+            {images.length>1 && (
+              <Swiper modules={[Thumbs]} onSwiper={setThumb}
+                spaceBetween={6} slidesPerView={Math.min(images.length,6)} watchSlidesProgress
+                className="h-16 sm:h-20">
+                {images.map((src,i) => (
+                  <SwiperSlide key={i} className="opacity-40 [&.swiper-slide-thumb-active]:opacity-100 transition-opacity cursor-pointer">
+                    <img src={src} alt="" className="w-full h-full object-cover" />
                   </SwiperSlide>
                 ))}
               </Swiper>
-
-              {/* Thumbs */}
-              {images.length > 1 && (
-                <Swiper
-                  modules={[Thumbs]}
-                  onSwiper={setThumbsSwiper}
-                  spaceBetween={8}
-                  slidesPerView={Math.min(images.length, 5)}
-                  watchSlidesProgress
-                  className="h-20"
-                >
-                  {images.map((src, i) => (
-                    <SwiperSlide key={i} className="opacity-40 [&.swiper-slide-thumb-active]:opacity-100 transition-opacity cursor-pointer">
-                      <img src={src} alt="" className="w-full h-full object-cover" />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-              )}
-            </motion.div>
-          </div>
-
-          {/* Info */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col"
-          >
-            {jewel.category && (
-              <p className="text-gold text-[10px] tracking-[0.5em] mb-4">{jewel.category.toUpperCase()}</p>
             )}
+          </motion.div>
 
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-4">
+          {/* info */}
+          <motion.div initial={{ opacity:0,x:30 }} animate={{ opacity:1,x:0 }} transition={{ duration:.8 }}
+            className="flex flex-col">
+            {jewel.category && <p className="text-[#C9A84C] text-[10px] tracking-[.4em] mb-4">{jewel.category.toUpperCase()}</p>}
+
+            <h1 className="font-['Cormorant_Garamond',serif] text-4xl sm:text-5xl lg:text-6xl text-white leading-tight mb-5">
               {jewel.name}
             </h1>
 
-            <div className="flex items-center gap-4 mb-8">
-              <p className="font-display text-3xl text-gold">₹{price}</p>
-              <div className={`px-3 py-1 text-[9px] tracking-widest border ${
-                Number(jewel.quantity) > 0
-                  ? 'border-green-800/50 text-green-400'
-                  : 'border-red-800/50 text-red-400'
-              }`}>
-                {Number(jewel.quantity) > 0 ? 'IN STOCK' : 'OUT OF STOCK'}
-              </div>
+            <div className="flex items-center gap-4 mb-7 flex-wrap">
+              <p className="font-['Cormorant_Garamond',serif] text-3xl text-[#C9A84C]">₹{price}</p>
+              <span className={`px-3 py-1.5 text-[9px] tracking-widest border ${inStock?'border-green-700/50 text-green-400 bg-green-900/10':'border-red-700/50 text-red-400 bg-red-900/10'}`}>
+                {inStock?'IN STOCK':'OUT OF STOCK'}
+              </span>
             </div>
 
             {jewel.description && (
-              <div className="mb-8 pb-8 border-b border-white/5">
-                <p className="text-gray-400 text-sm leading-relaxed">{jewel.description}</p>
+              <div className="mb-7 pb-7 border-b border-white/8">
+                <p className="text-gray-300 text-sm leading-relaxed">{jewel.description}</p>
               </div>
             )}
 
-            {/* Details */}
-            {details.length > 0 && (
-              <div className="mb-10 space-y-4">
-                {details.map(({ Icon, label, value }) => (
+            {details.length>0 && (
+              <div className="mb-8 space-y-3.5">
+                {details.map(({ Icon,label,value }) => (
                   <div key={label} className="flex items-center gap-4">
-                    <Icon size={14} className="text-gold shrink-0" />
-                    <span className="text-gray-600 text-xs tracking-widest w-24 shrink-0">{label}</span>
-                    <span className="text-gray-300 text-xs">{value}</span>
+                    <Icon size={14} className="text-[#C9A84C] flex-shrink-0" />
+                    <span className="text-gray-500 text-xs tracking-widest w-24 flex-shrink-0">{label}</span>
+                    <span className="text-gray-200 text-xs">{value}</span>
                   </div>
                 ))}
               </div>
             )}
 
-            {/* CTA */}
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={handleWhatsApp}
-              disabled={Number(jewel.quantity) === 0}
-              className="whatsapp-btn w-full flex items-center justify-center gap-3 py-4 bg-[#25D366] text-black text-xs tracking-widest uppercase font-semibold mb-3 disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              <MessageCircle size={18} />
-              {Number(jewel.quantity) > 0 ? 'Order via WhatsApp' : 'Out of Stock'}
-            </motion.button>
+            <div className="space-y-3 mt-auto">
+              <motion.button whileHover={{ scale:inStock?1.02:1 }} whileTap={{ scale:inStock?.97:1 }}
+                onClick={wa} disabled={!inStock}
+                className="whatsapp-pulse w-full flex items-center justify-center gap-3 py-4
+                           bg-[#25D366] text-black text-xs tracking-widest uppercase font-semibold
+                           disabled:opacity-40 disabled:cursor-not-allowed disabled:animate-none">
+                <MessageCircle size={18} />
+                {inStock ? 'Order via WhatsApp' : 'Currently Out of Stock'}
+              </motion.button>
 
-            <button
-              onClick={handleShare}
-              className="w-full py-4 border border-white/10 text-gray-500 hover:border-gold/50 hover:text-gold text-xs tracking-widest uppercase transition-all duration-300"
-            >
-              Share This Piece
-            </button>
+              <button onClick={share}
+                className="w-full py-4 border border-white/10 text-gray-400 text-xs tracking-widest uppercase
+                           hover:border-[#C9A84C]/40 hover:text-[#C9A84C] transition-all duration-300 flex items-center justify-center gap-2">
+                <Share2 size={13} /> Share This Piece
+              </button>
+            </div>
 
-            {/* Note */}
-            <p className="text-gray-600 text-[10px] text-center mt-6 leading-relaxed tracking-wider">
-              Clicking "Order via WhatsApp" will open a chat with our team.<br />
+            <p className="text-gray-600 text-[10px] text-center mt-5 leading-relaxed tracking-wider">
+              Tapping "Order via WhatsApp" opens a chat with our team.<br />
               We'll confirm availability and arrange delivery for you.
             </p>
+
+            <div className="mt-7 pt-7 border-t border-white/6">
+              <Link to="/collection"
+                className="inline-flex items-center gap-2 text-gray-500 hover:text-[#C9A84C] text-[10px] tracking-widest uppercase transition-colors">
+                <ArrowLeft size={12} /> Back to Collection
+              </Link>
+            </div>
           </motion.div>
         </div>
       </div>
